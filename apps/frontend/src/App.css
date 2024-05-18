@@ -1,3 +1,31 @@
 .font-color {
     color: #EEE4B1;
 }
+
+#ludo-board{
+    background-color: black;
+    position: relative;
+}
+
+.piece{
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    border: 3px solid white;
+    box-shadow: 0.5rem;
+    position: absolute;
+    display: none;
+}
+
+.player-one-piece{
+    background-color: #1184f0;
+}
+.player-two-piece{
+    background-color: #ecf542;
+}
+.player-three-piece{
+    background-color: #42f557;
+}
+.player-four-piece{
+    background-color: #d42234;
+}

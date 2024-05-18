@@ -1,8 +1,9 @@
 import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import "../App.css";
 
 
-function movePiece(pieceId: string, coordinateIndex: number): void {
+export function movePiece(pieceId: string, coordinateIndex: number): void {
   const pieceElement = document.getElementById(pieceId);
   if (pieceElement) {
     const currentCoordinate = COORDINATES_MAP[coordinateIndex] ?? [0, 0];
@@ -31,6 +32,7 @@ function setInitialPosition(): void {
         const currentCoordinate = COORDINATES_MAP[coordinateIndex] ?? [0, 0];
         pieceElement.style.top = `${currentCoordinate[1] * STEP_LENGTH}%`;
         pieceElement.style.left = `${currentCoordinate[0] * STEP_LENGTH}%`;
+        pieceElement.style.display = "block";
       } else {
         console.error(`Element with id ${pieceId} not found`);
       }
@@ -38,19 +40,16 @@ function setInitialPosition(): void {
   }
 }
 
-function Ludo() {
-  const [pieceId, setPieceId] = useState("");
-  const [coordinateIndex, setCoordinateIndex] = useState("");
-  const handleSubmit = (event: { preventDefault: () => void; }) => {
-    event.preventDefault();
-    var coordinateIndexInt = parseInt(coordinateIndex, 10);
-    movePiece(pieceId, coordinateIndexInt);
-  };
+export const Board = () => {
+  useEffect(() => {
+    setInitialPosition();
+  }, []);
+
   return (
-    <>
-      <div className='flex m-6 justify-center bg-grey'>
+    <div className='w-screen h-screen p-16'>
+      <div className='flex justify-center bg-grey content-center'>
         <div id="ludo-board" className=" m-6 justify-center bg-grey">
-          <img src="ludo-bg.jpg" />
+          <img src="ludo-bg.jpg"/>
           <div id="p11" className='piece player-one-piece'></div>
           <div id="p12" className='piece player-one-piece'></div>
           <div id="p13" className='piece player-one-piece'></div>
@@ -71,37 +70,7 @@ function Ludo() {
           <div id="p43" className='piece player-four-piece'></div>
           <div id="p44" className='piece player-four-piece'></div>
         </div>
-        <button onClick={setInitialPosition} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Start</button>
       </div>
-      <form id="piece-position-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="piece-id">Piece ID:</label>
-          <input
-            type="text"
-            id="piece-id"
-            name="pieceId"
-            value={pieceId}
-            onChange={(e) => setPieceId(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group" >
-          <label htmlFor="coordinate-index">Coordinate Index:</label>
-          <input
-            type="number"
-            id="coordinate-index"
-            name="coordinateIndex"
-            value={coordinateIndex}
-            onChange={(e) => setCoordinateIndex(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-    </>
+    </div>
   )
 }
-
-export default Ludo;

@@ -104,24 +104,20 @@ export class GameBoard {
         }
 
         if (diceValue > 6) {
-            console.log("Error in dice value");
             return { success: false, completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
       
         if (piece > 3 || player > 3 || piece < 0 || player < 0) {
-            console.log("Error in piece player");
             return { success: false, completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
       
         if (!this.players || !this.startPoints || !this.exitPoints) {
-            console.log("Error in points");
             // Check if necessary properties are defined
             return { success: false, completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
 
         // Condition when player's selected piece is in home and diceValue is 6
         if (this.players[player][piece] === -1 && diceValue===6) {
-            console.log("6");
             this.players[player][piece] = this.startPoints[player];
             this.board[this.startPoints[player]].push(`${player}, ${piece}`);
             return { success: true, completed: false, Moves: [{ player: player, piece: piece, entry: false, nextPos: this.startPoints[player] || 0 }]};
@@ -210,7 +206,6 @@ export class GameBoard {
             Moves.push({player: player, piece: piece, entry: false, nextPos: nextPos});
             return { success: true, completed: false, Moves: Moves};
         }
-        console.log("last");
         return { success: false, completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
       }     
 }

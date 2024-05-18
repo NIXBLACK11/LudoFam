@@ -46,9 +46,11 @@ export class GameManager {
                     game.playerNames[3] === socket
                 );
                 const board: string[][] = game?.getBoard() || [];
-                console.log(game?.makeMove(move.player, move.piece, move.diceValue))
-                console.log(game?.getPlayers());
-                console.log(board);
+                const res = game?.makeMove(move.player, move.piece, move.diceValue);
+                game?.playerNames[0]?.send(JSON.stringify(res));
+                game?.playerNames[1]?.send(JSON.stringify(res));
+                game?.playerNames[2]?.send(JSON.stringify(res));
+                game?.playerNames[3]?.send(JSON.stringify(res));
             }
         })
     }
