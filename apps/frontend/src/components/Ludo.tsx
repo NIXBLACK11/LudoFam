@@ -1,29 +1,38 @@
-import { COORDINATES_MAP, STEP_LENGTH } from './../constants/constants';
+import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
 import { useState } from 'react';
 
 
-function movePiece(pieceId, coordinateIndex) {
-  var pieceElement = document.getElementById(pieceId);
-  pieceElement.style.top = COORDINATES_MAP[coordinateIndex][1] * STEP_LENGTH + '%';
-  pieceElement.style.left = COORDINATES_MAP[coordinateIndex][0] * STEP_LENGTH + '%';
+function movePiece(pieceId: string, coordinateIndex: number): void {
+  const pieceElement = document.getElementById(pieceId);
+  if (pieceElement) {
+    const currentCoordinate = COORDINATES_MAP[coordinateIndex] ?? [0, 0];
+    pieceElement.style.top = `${currentCoordinate[1] * STEP_LENGTH}%`;
+    pieceElement.style.left = `${currentCoordinate[0] * STEP_LENGTH}%`;
+  } else {
+    console.error(`Element with id ${pieceId} not found`);
+  }
 }
 
-function setInitialPosition() {
-  const COORDINATE_OFFSETS = {
+function setInitialPosition(): void {
+  const COORDINATE_OFFSETS: { [key: number]: number } = {
     1: 100,
     2: 200,
     3: 300,
-    4: 400
+    4: 400,
   };
 
   for (let player = 1; player <= 4; player++) {
     for (let piece = 1; piece <= 4; piece++) {
       const pieceId = `p${player}${piece}`;
-      const coordinateIndex = COORDINATE_OFFSETS[player] + piece - 1;
+      const CoordOff = COORDINATE_OFFSETS[player] ?? 0;
+      const coordinateIndex = CoordOff + piece - 1;
       const pieceElement = document.getElementById(pieceId);
       if (pieceElement) {
-        pieceElement.style.top = COORDINATES_MAP[coordinateIndex][1] * STEP_LENGTH + '%';
-        pieceElement.style.left = COORDINATES_MAP[coordinateIndex][0] * STEP_LENGTH + '%';
+        const currentCoordinate = COORDINATES_MAP[coordinateIndex] ?? [0, 0];
+        pieceElement.style.top = `${currentCoordinate[1] * STEP_LENGTH}%`;
+        pieceElement.style.left = `${currentCoordinate[0] * STEP_LENGTH}%`;
+      } else {
+        console.error(`Element with id ${pieceId} not found`);
       }
     }
   }
@@ -32,7 +41,7 @@ function setInitialPosition() {
 function Ludo() {
   const [pieceId, setPieceId] = useState("");
   const [coordinateIndex, setCoordinateIndex] = useState("");
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: { preventDefault: () => void; }) => {
     event.preventDefault();
     var coordinateIndexInt = parseInt(coordinateIndex, 10);
     movePiece(pieceId, coordinateIndexInt);

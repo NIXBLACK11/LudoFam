@@ -1,4 +1,4 @@
-export const COORDINATES_MAP = {
+export const COORDINATES_MAP: { [key: number]: [number, number] } = {
   0: [6, 13],
   1: [6, 12],
   2: [6, 11],
