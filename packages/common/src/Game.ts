@@ -139,7 +139,6 @@ export class GameBoard {
                         }    
                     }
                 } else {
-                    nextPos = nextPos - (this.exitPoints[player] || 0);
                     this.players[player][piece]=0;
                     this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                     return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};

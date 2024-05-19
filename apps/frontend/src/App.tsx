@@ -9,7 +9,7 @@ import { useRef, useState, useEffect } from 'react';
 import { socketState } from './atoms/atom';
 
 export function App() {
-  const musicRef = useRef<HTMLAudioElement>(new Audio('back.mp4'));
+  const musicRef = useRef<HTMLAudioElement>(new Audio('back.mp3'));
   const [sound, setSound] = useState<boolean>(false);
   const [_socket, setSocket] = useRecoilState(socketState);
 
