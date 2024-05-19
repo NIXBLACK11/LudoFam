@@ -84,11 +84,16 @@ Learn more about the power of Turborepo:
 ```json
 {
   "type": "init_game",
-  "gameCode": "your_game_code_here"
+  "gameCode": "hello"
 }
 
 {
   "type": "move",
-  "move": "random"
+  "gameCode": "hello",
+  "move": {
+    "player": 0,
+    "piece": 0,
+    "diceValue": 6
+  }
 }
 ```

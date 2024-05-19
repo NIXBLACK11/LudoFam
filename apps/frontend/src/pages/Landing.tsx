@@ -1,13 +1,21 @@
 import '../App.css';
 
 import { useRecoilState } from 'recoil';
-import { codeState, socketState } from '../atoms/atom';
+import { useNavigate } from 'react-router-dom';
+import { codeState, socketState, colorState, gameState } from '../atoms/atom';
 import { useEffect, useRef } from 'react';
 import { initGame } from '../backendCalls/initGame';
+import { GameBoard } from '@repo/common/game';
+
+
 
 export const Landing = () => {
     const [code, setCode] = useRecoilState(codeState);
-    const [socket, setSocket] = useRecoilState(socketState);
+    const [socket, _setSocket] = useRecoilState(socketState);
+    const [_color, setColor] = useRecoilState(colorState);
+    const [_game, setGame] = useRecoilState(gameState);
+
+    const navigate = useNavigate();
     const clickRef = useRef(new Audio('click.wav'));
     const typeRef = useRef(new Audio('type.wav'));
 
@@ -16,12 +24,29 @@ export const Landing = () => {
     };
     
     useEffect(() => {
-        const socket = new WebSocket('ws://localhost:3000');
-        socket.onopen = () => {
-            console.log('Connected');
-            setSocket(socket);
-        };  
-    }, []);
+        if (!socket) return;
+
+        const handleMessage = (event: { data: { toString: () => string; }; }) => {
+            try {
+                const message = JSON.parse(event.data.toString());
+                console.log('Message from server:', message);
+              
+                if (message.type === "init_game") {
+                  setColor(message.payload.color);
+                  setGame(new GameBoard(code));
+                  navigate('/game');
+                }
+              } catch (error) {
+                console.error('Error parsing JSON:', error);
+              }
+        };
+
+        socket.onmessage = handleMessage;
+
+        return () => {
+            socket.onmessage = null;
+        };
+    }, [socket, setColor, navigate]);
 
     return (
         <div className='flex flex-col pb-10'>

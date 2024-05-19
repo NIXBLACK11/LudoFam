@@ -4,7 +4,9 @@ export async function initGame(socket: WebSocket, gameCode: string){
             type: "init_game",
             gameCode: gameCode
         }))
+        return true;
     } catch (error) {
         console.log(error);
+        return false;
     }
 }

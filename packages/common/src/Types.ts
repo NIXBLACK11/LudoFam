@@ -9,6 +9,7 @@ export type Move = {
 };
 
 export type Result = {
+  type: string;
   success: boolean;
   completed: boolean;
   Moves: Move[];

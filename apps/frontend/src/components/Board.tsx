@@ -1,5 +1,5 @@
 import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import "../App.css";
 
 

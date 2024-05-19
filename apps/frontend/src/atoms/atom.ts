@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import { GameBoard } from "@repo/common/game"; 
 
 export const codeState = atom<string>({
     key: 'codeState',
@@ -9,3 +10,13 @@ export const socketState = atom<WebSocket | null>({
     key: 'socketState',
     default: null,
 });
+
+export const colorState = atom<string>({
+    key: 'colorState',
+    default: 'black',
+});
+
+export const gameState = atom<GameBoard | null>({
+    key: 'gameState',
+    default: null,
+})

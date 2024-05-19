@@ -27,9 +27,10 @@ const games = new GameManager();
 wss.on('connection', function connection(socket) {
     games.handleMessages(socket);
     
-    socket.on('disconnect', () => games.removeUser(socket));
+    // socket.on('disconnect', () => games.removeUser(socket));
 
     socket.on('error', console.error);
 
-    socket.send(`Connection made successfully`);
+    // socket.send(`Connection made successfully`);
+    console.log(`Connection made successfully`);
 });
