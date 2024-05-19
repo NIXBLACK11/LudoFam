@@ -44,9 +44,9 @@ export class GameBoard {
             this.board.push([]);
         }
         this.entry = [];
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 4; i++) {
             const innerArray = [];
-            for (let j = 0; j < 4; j++) {
+            for (let j = 0; j < 6; j++) {
                 innerArray.push(new Array(4).fill(0));
             }
             this.entry.push(innerArray);
@@ -96,7 +96,7 @@ export class GameBoard {
         if (this.players[player][piece] !== -1) {
             // store current moved
             if(this.playersMoved[player][piece]+diceValue>56) {
-                return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: false, nextPos: this.startPoints[player] || 0 }]};
+                return { success: false, type: "move", completed: false, Moves: [{player: player, piece: piece, entry: true, nextPos: 0 }]};
             }
             this.playersMoved[player][piece] = this.playersMoved[player][piece]+diceValue;
 
@@ -105,7 +105,7 @@ export class GameBoard {
             if(this.playersMoved[player][piece]<=50) {
                 nextPos = (this.players[player][piece] || 0) + diceValue;
             } else {
-                nextPos = this.playerMoved[player][piece] - this.exitPoints[player][piece];
+                nextPos = this.playersMoved[player][piece] - 50;
             }
             
             // Condition if the player's selected piece can enter the entry
@@ -116,18 +116,19 @@ export class GameBoard {
                             this.entry[player][this.playersPosEnt[player][piece]].filter((s: string) => {
                                 s!=`${player},${piece}`;
                             });
-                            this.playerMoved[player][piece]+=diceValue;
-                            this.playersPosEnt[player][piece] = nextPos-1;
-                            this.entry[player][nextPos-1].push(`${player}, ${piece}`);
-                            return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos }]};
-                        } else if(nextPos>6) {
-                            return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
-                        } else {
-                            this.entry[player][this.playersPosEnt[player][piece]] = 
-                            this.entry[player][this.playersPosEnt[player][piece]].filter((s: string) => {
-                                s!=`${player},${piece}`;
-                            });
-                        this.playerMoved[player][piece]+=diceValue;
+                        this.playersMoved[player][piece]+=diceValue;
+                        this.playersPosEnt[player][piece] = nextPos-1;
+                        console.log(nextPos-1);
+                        this.entry[player][nextPos-1].push(`${player}, ${piece}`);
+                        return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
+                    } else if(nextPos>6) {
+                        return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                    } else {
+                        this.entry[player][this.playersPosEnt[player][piece]] = 
+                        this.entry[player][this.playersPosEnt[player][piece]].filter((s: string) => {
+                            s!=`${player},${piece}`;
+                        });
+                        this.playersMoved[player][piece]+=diceValue;
                         this.playersPosEnt[player][piece] = nextPos-1;
                         this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                         this.playersCompleted[player][piece] = true;
@@ -141,6 +142,7 @@ export class GameBoard {
                 } else {
                     this.players[player][piece]=0;
                     this.entry[player][nextPos-1].push(`${player}, ${piece}`);
+                    this.playersPosEnt[player][piece] = nextPos-1;
                     return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
                 }
             }
