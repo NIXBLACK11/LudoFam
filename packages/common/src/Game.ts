@@ -72,7 +72,7 @@ export class GameBoard {
             return { success: false, type: "move", completed: true, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
 
-        if (diceValue > 6) {
+        if (diceValue > 6 || diceValue < 1) {
             return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
       
@@ -96,9 +96,11 @@ export class GameBoard {
         if (this.players[player][piece] !== -1) {
             // store current moved
             if(this.playersMoved[player][piece]+diceValue>56) {
+                console.log("error", this.playersMoved[player][piece]+diceValue);
                 return { success: false, type: "move", completed: false, Moves: [{player: player, piece: piece, entry: true, nextPos: 0 }]};
             }
             this.playersMoved[player][piece] = this.playersMoved[player][piece]+diceValue;
+            console.log("error", this.playersMoved[player][piece]);
 
             // logic to calculate the next position
             let nextPos: number = 0;
@@ -116,19 +118,19 @@ export class GameBoard {
                             this.entry[player][this.playersPosEnt[player][piece]].filter((s: string) => {
                                 s!=`${player},${piece}`;
                             });
-                        this.playersMoved[player][piece]+=diceValue;
                         this.playersPosEnt[player][piece] = nextPos-1;
-                        console.log(nextPos-1);
+                        console.log("nextpos<6", nextPos-1);
                         this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                         return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
                     } else if(nextPos>6) {
+                        console.log("nextpos>6", nextPos-1);
                         return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
                     } else {
+                        console.log("nextpos==6", nextPos-1);
                         this.entry[player][this.playersPosEnt[player][piece]] = 
                         this.entry[player][this.playersPosEnt[player][piece]].filter((s: string) => {
                             s!=`${player},${piece}`;
                         });
-                        this.playersMoved[player][piece]+=diceValue;
                         this.playersPosEnt[player][piece] = nextPos-1;
                         this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                         this.playersCompleted[player][piece] = true;
@@ -157,6 +159,7 @@ export class GameBoard {
             this.board[nextPos].forEach((s: string) => {
                 if(s.split(',')[0] !== `${player}`) {
                     toCut.push(s);
+                    this.playersMoved[parseInt(s.split(',')[0] ?? "")][s.split(',')[1] ?? ""] = -1;
                 }
             });
 
@@ -178,6 +181,7 @@ export class GameBoard {
             Moves.push({player: player, piece: piece, entry: false, nextPos: nextPos});
             return { success: true, type: "move", completed: false, Moves: Moves};
         }
+        console.log("test");
         return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
       }     
 }

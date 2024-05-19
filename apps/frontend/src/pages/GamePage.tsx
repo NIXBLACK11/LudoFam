@@ -2,13 +2,14 @@ import '../App.css';
 import { Board, movePiece } from "../components/Board"
 import { Popup } from '@repo/ui/Popup';
 import { useRecoilState } from "recoil";
-import { codeState, colorState, gameState, socketState } from "../atoms/atom";
+import { codeState, colorState, gameState, moveState, socketState } from "../atoms/atom";
 import { useEffect } from "react";
 
 
 export const GamePage = () => {
     const [socket, _setSocket] = useRecoilState(socketState);
     const [code, setCode] = useRecoilState(codeState);
+    const [move, setMove] = useRecoilState(moveState);
     const [color, _setColor] = useRecoilState(colorState);
     const [game, _setGame] = useRecoilState(gameState);
     
@@ -20,6 +21,8 @@ export const GamePage = () => {
                 const message = JSON.parse(event.data.toString());
                 console.log('Message from server:', message);
                 
+                // game?.makeMove()
+
                 if (message.type == "move") {
                     if(message.completed == true) {
                         

@@ -72,13 +72,6 @@ export class GameManager {
                     socket.send(JSON.stringify(res));
                 }
 
-                if(res?.completed==true) {
-                    gamePlayer[0]?.send(JSON.stringify({res, socket}));
-                    gamePlayer[1]?.send(JSON.stringify({res, socket}));
-                    gamePlayer[2]?.send(JSON.stringify({res, socket}));
-                    gamePlayer[3]?.send(JSON.stringify({res, socket}));
-                }
-
                 gamePlayer[0]?.send(JSON.stringify(res));
                 gamePlayer[1]?.send(JSON.stringify(res));
                 gamePlayer[2]?.send(JSON.stringify(res));
@@ -87,20 +80,3 @@ export class GameManager {
         });
     }
 }
-
-//     removeUser(socket: WebSocket) {
-//         const game = this.games.find((game) => 
-//             game.playerNames[0] === socket || 
-//             game.playerNames[1] === socket ||
-//             game.playerNames[2] === socket ||
-//             game.playerNames[3] === socket
-//         );
-//         if(game == undefined) {}
-//         else {
-//             const gameCode = game.gameCode;
-//             this.gamesPlayers[gameCode]?.filter(gamePlayer => {
-//                 gamePlayer!=socket;
-//             });
-//         }
-//     }
-// }

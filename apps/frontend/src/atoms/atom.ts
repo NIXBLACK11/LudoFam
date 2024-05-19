@@ -20,3 +20,8 @@ export const gameState = atom<GameBoard | null>({
     key: 'gameState',
     default: null,
 })
+
+export const moveState = atom<number[]>({
+    key: 'moveState',
+    default: [-1, -1, -1],
+})
