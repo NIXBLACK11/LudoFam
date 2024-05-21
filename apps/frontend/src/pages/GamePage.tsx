@@ -1,10 +1,9 @@
+import React, { useEffect } from "react";
 import '../App.css';
-import { Board, movePiece } from "../components/Board"
+import { Board, movePiece } from "../components/Board";
 import { Popup } from '@repo/ui/Popup';
 import { useRecoilState } from "recoil";
 import { codeState, colorState, gameState, moveState, socketState } from "../atoms/atom";
-import { useEffect } from "react";
-
 
 export const GamePage = () => {
     const [socket, _setSocket] = useRecoilState(socketState);
@@ -21,16 +20,18 @@ export const GamePage = () => {
                 const message = JSON.parse(event.data.toString());
                 console.log('Message from server:', message);
                 
+                
+
                 // game?.makeMove()
 
-                if (message.type == "move") {
-                    if(message.completed == true) {
-                        
+                if (message.type === "move") {
+                    if (message.completed) {
+                        // Handle completed move logic
                     }
                 }
-              } catch (error) {
+            } catch (error) {
                 console.error('Error parsing JSON:', error);
-              }
+            }
         };
 
         socket.onmessage = handleMessage;
@@ -42,8 +43,8 @@ export const GamePage = () => {
 
     return (
         <div className="w-screen h-screen flex justify-center items-center">
-            {color!='black' && <Popup color={color} />}
-            <Board/>
+            {color !== 'black' && <Popup color={color} />}
+            <Board />
         </div>
-    )
-}
+    );
+};

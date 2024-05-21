@@ -1,8 +1,7 @@
-import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-const [move, setMove] = useRecoilState(moveState);
-import { useEffect } from 'react';
 import "../App.css";
 import { useRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
 import { moveState } from '../atoms/atom';
 
 
@@ -44,6 +43,8 @@ function setInitialPosition(): void {
 }
 
 export const Board = () => {
+  const [move, setMove] = useRecoilState(moveState);
+
   const dicevalue: number = 0;
   useEffect(() => {
     setInitialPosition();

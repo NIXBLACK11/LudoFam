@@ -7,8 +7,6 @@ import { useEffect, useRef } from 'react';
 import { initGame } from '../backendCalls/initGame';
 import { GameBoard } from '@repo/common/game';
 
-
-
 export const Landing = () => {
     const [code, setCode] = useRecoilState(codeState);
     const [socket, _setSocket] = useRecoilState(socketState);
