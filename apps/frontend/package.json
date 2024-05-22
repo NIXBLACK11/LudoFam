@@ -13,6 +13,7 @@
     "@repo/common": "*",
     "@repo/ui": "*",
     "react": "^18.2.0",
+    "react-dice-roll": "^1.2.2",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

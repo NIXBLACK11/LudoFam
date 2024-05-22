@@ -1,8 +1,9 @@
 import "../App.css";
 import { useRecoilState } from 'recoil';
-import React, { useEffect } from 'react';
+import Dice from 'react-dice-roll';
+import { useEffect } from 'react';
 import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-import { moveState } from '../atoms/atom';
+import { gameState, moveState, socketState } from '../atoms/atom';
 
 
 export function movePiece(pieceId: string, coordinateIndex: number): void {
@@ -42,45 +43,63 @@ function setInitialPosition(): void {
   }
 }
 
-export const Board = () => {
-  const [move, setMove] = useRecoilState(moveState);
 
-  const dicevalue: number = 0;
+
+export const Board = () => {
+  let dicevalue = 0;
+  const [game, _setGame] = useRecoilState(gameState);
+  const [socket, _setSocket] = useRecoilState(socketState);
+
+  const testMove = (player: number, piece: number, dicevalue: number) => {
+    const res = game?.makeMove(player, piece, dicevalue);
+    if(!res?.success) {
+      alert(`wrong request`);
+      console.log(res);
+      return;
+    }
+    const moves = res?.Moves;
+    moves?.map((m) => {
+      let move = `p${m.player.toString()}${m.piece.toString()}`;
+      movePiece(move, m.nextPos??0);
+    });
+    socket?.send(JSON.stringify(res));
+  }
+
   useEffect(() => {
     setInitialPosition();
   }, []);
 
   return (
-    <div className='w-screen h-screen p-16'>
-      <div className='flex justify-center bg-grey content-center'>
+    <div className='w-screen h-screen p-16 flex flex-col'>
+      <div className='flex flex-row justify-center bg-grey content-center'>
         <div id="ludo-board" className=" m-6 justify-center bg-grey">
           <img src="ludo-bg.jpg"/>
           <div 
             id="p00"
             className='piece player-one-piece'
             onClick={()=>{
-              setMove([0, 0, dicevalue]);
+              testMove(0, 0, dicevalue);
             }}
           ></div>
           <div 
             id="p01"
             className='piece player-one-piece'
             onClick={()=>{
-              setMove([0, 1, dicevalue]);
+              testMove(0, 1, dicevalue);
             }}
           ></div>
           <div 
             id="p02"
             className='piece player-one-piece'
             onClick={()=>{
-              setMove([0, 2, dicevalue]);
+              testMove(0, 2, dicevalue);
             }}
           ></div>
           <div 
             id="p03"
             className='piece player-one-piece'
             onClick={()=>{
-              setMove([0, 3, dicevalue]);
+              testMove(0, 3, dicevalue);
             }}
           ></div>
 
@@ -88,28 +107,28 @@ export const Board = () => {
             id="p10"
             className='piece player-two-piece'
             onClick={()=>{
-              setMove([1, 0, dicevalue]);
+              testMove(1, 0, dicevalue);
             }}
           ></div>
           <div 
             id="p11"
             className='piece player-two-piece'
             onClick={()=>{
-              setMove([1, 1, dicevalue]);
+              testMove(1, 1, dicevalue);
             }}
           ></div>
           <div 
             id="p12"
             className='piece player-two-piece'
             onClick={()=>{
-              setMove([1, 2, dicevalue]);
+              testMove(1, 2, dicevalue);
             }}
           ></div>
           <div 
             id="p13"
             className='piece player-two-piece'
             onClick={()=>{
-              setMove([1, 3, dicevalue]);
+              testMove(1, 3, dicevalue);
             }}
           ></div>
 
@@ -117,28 +136,28 @@ export const Board = () => {
             id="p20"
             className='piece player-three-piece'
             onClick={()=>{
-              setMove([2, 0, dicevalue]);
+              testMove(2, 0, dicevalue);
             }}
           ></div>
           <div 
             id="p21"
             className='piece player-three-piece'
             onClick={()=>{
-              setMove([2, 1, dicevalue]);
+              testMove(2, 1, dicevalue);
             }}
           ></div>
           <div 
             id="p22"
             className='piece player-three-piece'
             onClick={()=>{
-              setMove([2, 2, dicevalue]);
+              testMove(2, 2, dicevalue);
             }}
           ></div>
           <div 
             id="p23"
             className='piece player-three-piece'
             onClick={()=>{
-              setMove([2, 3, dicevalue]);
+              testMove(2, 3, dicevalue);
             }}
           ></div>
 
@@ -146,31 +165,34 @@ export const Board = () => {
             id="p30"
             className='piece player-four-piece'
             onClick={()=>{
-              setMove([3, 0, dicevalue]);
+              testMove(3, 0, dicevalue);
             }}
           ></div>
           <div 
             id="p31"
             className='piece player-four-piece'
             onClick={()=>{
-              setMove([3, 1, dicevalue]);
+              testMove(3, 1, dicevalue);
             }}
           ></div>
           <div 
             id="p32"
             className='piece player-four-piece'
             onClick={()=>{
-              setMove([3, 2, dicevalue]);
+              testMove(3, 2, dicevalue);
             }}
           ></div>
           <div 
             id="p33"
             className='piece player-four-piece'
             onClick={()=>{
-              setMove([3, 3, dicevalue]);
+              testMove(3, 3, dicevalue);
             }}
           ></div>
         </div>
+      </div>
+      <div className="flex flex-row justify-center content-center m-5">
+        <Dice size={80} onRoll={(value) => dicevalue=value} />
       </div>
     </div>
   )

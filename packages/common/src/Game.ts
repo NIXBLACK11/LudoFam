@@ -3,15 +3,15 @@ import { WebSocket } from 'ws';
 
 export class GameBoard {
     public gameCode: string;
-    private players: number[][];
-    private playersPosEnt: number[][];
-    private totalCompleted: number;
-    private playersMoved: number[][];
-    private playersCompleted: boolean[][];
-    private entry: number[][][];
-    private exitPoints: number[];
-    private startPoints: number[];
-    private board: string[][];
+    public players: number[][];
+    public playersPosEnt: number[][];
+    public totalCompleted: number;
+    public playersMoved: number[][];
+    public playersCompleted: boolean[][];
+    public entry: number[][][];
+    public exitPoints: number[];
+    public startPoints: number[];
+    public board: string[][];
 
     constructor(gameCode: string) {
         this.gameCode = gameCode;
@@ -68,6 +68,7 @@ export class GameBoard {
     }
 
     public makeMove(this: any, player: number, piece: number, diceValue: number): Result {
+        console.log(`makeMove called with player: ${player}, piece: ${piece}, diceValue: ${diceValue}`);
         if(this.totalCompleted===4) {
             return { success: false, type: "move", completed: true, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
