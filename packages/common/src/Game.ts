@@ -45,7 +45,7 @@ export class GameBoard {
         }
         this.entry = [];
         for (let i = 0; i < 4; i++) {
-            const innerArray = [];
+            let innerArray = [];
             for (let j = 0; j < 6; j++) {
                 innerArray.push(new Array(4).fill(0));
             }
