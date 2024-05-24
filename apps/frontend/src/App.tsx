@@ -38,7 +38,6 @@ export function App() {
     };
   }, [setSocket]);
 
-
   return (
     <div style={{
       backgroundImage: "url('back.jpg')",

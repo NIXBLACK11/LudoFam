@@ -1,5 +1,5 @@
 import '../App.css';
-import { Board } from "../components/Board";
+import { Board} from "../components/Board";
 import { Popup } from '@repo/ui/Popup';
 import { useRecoilState } from "recoil";
 import { colorState } from "../atoms/atom";

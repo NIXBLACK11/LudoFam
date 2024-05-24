@@ -51,37 +51,34 @@ export const Board = () => {
   const game = new GameBoard(code);
 
   useEffect(() => {
-    if (!socket) {
-      console.log("yoooo");
-      return
-    };
-    console.log("hello");
+    if (!socket) return;
+    console.log(socket);
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      console.log("WebSocket connection is open!");
+    } else {
+      console.log("WebSocket connection is not open.");
+    }
+    const handleMessage2 = (event: { data: { toString: () => string; }; }) => {
+      console.log("inside message");
+      try {
+          const message = JSON.parse(event.data.toString());
+          console.log('Message from server:', message);
 
-    const handleMessage = (event: { data: { toString: () => string; }; }) => {
-        try {
-            const message = JSON.parse(event.data.toString());
-            console.log('Message from server:', message);
-            
-            
-            if (message.type === "move") {
-                if (message.completed) {
-                  const moves = message.Moves;
-                  moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
-                    let move = `p${m.player.toString()}${m.piece.toString()}`;
-                    movePiece(move, m.nextPos??0);
-                  });
-                }
-            }
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-        }
+          if (message.type === "move") {
+              if (message.completed) {
+                const moves = message.Moves;
+                moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
+                  let move = `p${m.player.toString()}${m.piece.toString()}`;
+                  movePiece(move, m.nextPos??0);
+                });
+              }
+          }
+      } catch (error) {
+          console.error('Error parsing JSON:', error);
+      }
     };
 
-    socket.onmessage = handleMessage;
-
-    return () => {
-        socket.onmessage = null;
-    };
+    socket.onmessage = handleMessage2;
   }, [socket]);
 
   const testMove = (player: number, piece: number, dicevalue: number) => {
