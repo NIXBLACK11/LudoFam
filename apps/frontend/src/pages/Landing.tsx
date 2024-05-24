@@ -2,16 +2,14 @@ import '../App.css';
 
 import { useRecoilState } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { codeState, socketState, colorState, gameState } from '../atoms/atom';
+import { codeState, socketState, colorState } from '../atoms/atom';
 import { useEffect, useRef } from 'react';
 import { initGame } from '../backendCalls/initGame';
-import { GameBoard } from '@repo/common/game';
 
 export const Landing = () => {
     const [code, setCode] = useRecoilState(codeState);
     const [socket, _setSocket] = useRecoilState(socketState);
     const [_color, setColor] = useRecoilState(colorState);
-    const [_game, setGame] = useRecoilState(gameState);
 
     const navigate = useNavigate();
     const clickRef = useRef(new Audio('click.wav'));
@@ -31,7 +29,6 @@ export const Landing = () => {
               
                 if (message.type === "init_game") {
                   setColor(message.payload.color);
-                  setGame(new GameBoard(code));
                   navigate('/game');
                 }
               } catch (error) {

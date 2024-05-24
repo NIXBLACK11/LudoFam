@@ -72,10 +72,10 @@ export class GameManager {
                     socket.send(JSON.stringify(res));
                 }
 
-                gamePlayer[0]?.send(JSON.stringify(res));
-                gamePlayer[1]?.send(JSON.stringify(res));
-                gamePlayer[2]?.send(JSON.stringify(res));
-                gamePlayer[3]?.send(JSON.stringify(res));
+                if(gamePlayer[0]!=socket) gamePlayer[0]?.send(JSON.stringify(res));
+                if(gamePlayer[1]!=socket) gamePlayer[1]?.send(JSON.stringify(res));
+                if(gamePlayer[2]!=socket) gamePlayer[2]?.send(JSON.stringify(res));
+                if(gamePlayer[3]!=socket) gamePlayer[3]?.send(JSON.stringify(res));
             }
         });
     }

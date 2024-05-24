@@ -3,7 +3,8 @@ import { useRecoilState } from 'recoil';
 import Dice from 'react-dice-roll';
 import { useEffect } from 'react';
 import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-import { gameState, moveState, socketState } from '../atoms/atom';
+import { codeState, socketState } from '../atoms/atom';
+import { GameBoard } from "@repo/common/game";
 
 
 export function movePiece(pieceId: string, coordinateIndex: number): void {
@@ -43,22 +44,56 @@ function setInitialPosition(): void {
   }
 }
 
-
-
 export const Board = () => {
   let dicevalue = 0;
-  const [game, _setGame] = useRecoilState(gameState);
+  const [code, _setCode] = useRecoilState(codeState);
   const [socket, _setSocket] = useRecoilState(socketState);
+  const game = new GameBoard(code);
+
+  useEffect(() => {
+    if (!socket) {
+      console.log("yoooo");
+      return
+    };
+    console.log("hello");
+
+    const handleMessage = (event: { data: { toString: () => string; }; }) => {
+        try {
+            const message = JSON.parse(event.data.toString());
+            console.log('Message from server:', message);
+            
+            
+            if (message.type === "move") {
+                if (message.completed) {
+                  const moves = message.Moves;
+                  moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
+                    let move = `p${m.player.toString()}${m.piece.toString()}`;
+                    movePiece(move, m.nextPos??0);
+                  });
+                }
+            }
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+        }
+    };
+
+    socket.onmessage = handleMessage;
+
+    return () => {
+        socket.onmessage = null;
+    };
+  }, [socket]);
 
   const testMove = (player: number, piece: number, dicevalue: number) => {
-    const res = game?.makeMove(player, piece, dicevalue);
+    const res = game.makeMove(player, piece, dicevalue);
+    console.log(res);
     if(!res?.success) {
       alert(`wrong request`);
       console.log(res);
       return;
     }
     const moves = res?.Moves;
-    moves?.map((m) => {
+    moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
       let move = `p${m.player.toString()}${m.piece.toString()}`;
       movePiece(move, m.nextPos??0);
     });
