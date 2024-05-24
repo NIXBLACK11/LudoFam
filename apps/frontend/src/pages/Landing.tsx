@@ -21,7 +21,6 @@ export const Landing = () => {
     
     useEffect(() => {
         if (!socket) return;
-        console.log(socket);
         const handleMessage = (event: { data: { toString: () => string; }; }) => {
             try {
                 const message = JSON.parse(event.data.toString());

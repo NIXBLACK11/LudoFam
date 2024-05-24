@@ -97,7 +97,6 @@ export class GameBoard {
             if (this.players[player][piece] === -1 && diceValue===6) {
                 this.players[player][piece] = this.startPoints[player];
                 this.board[this?.startPoints[player]].push(`${player}, ${piece}`);
-                console.log(this.players);
                 console.log(5);
                 return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: false, nextPos: this.startPoints[player] || 0 }]};
             }

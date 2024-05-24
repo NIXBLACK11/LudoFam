@@ -52,21 +52,16 @@ export const Board = () => {
 
   useEffect(() => {
     if (!socket) return;
-    console.log(socket);
-    if (socket && socket.readyState === WebSocket.OPEN) {
-      console.log("WebSocket connection is open!");
-    } else {
-      console.log("WebSocket connection is not open.");
-    }
+
     const handleMessage2 = (event: { data: { toString: () => string; }; }) => {
-      console.log("inside message");
       try {
           const message = JSON.parse(event.data.toString());
           console.log('Message from server:', message);
 
           if (message.type === "move") {
-              if (message.completed) {
+              if (message.success) {
                 const moves = message.Moves;
+                console.log("Moves:"+moves);
                 moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
                   let move = `p${m.player.toString()}${m.piece.toString()}`;
                   movePiece(move, m.nextPos??0);
@@ -83,7 +78,6 @@ export const Board = () => {
 
   const testMove = (player: number, piece: number, dicevalue: number) => {
     const res = game.makeMove(player, piece, dicevalue);
-    console.log(res);
     if(!res?.success) {
       alert(`wrong request`);
       console.log(res);
@@ -94,7 +88,17 @@ export const Board = () => {
       let move = `p${m.player.toString()}${m.piece.toString()}`;
       movePiece(move, m.nextPos??0);
     });
-    socket?.send(JSON.stringify(res));
+    const moveObject = {
+      type: "move",
+      gameCode: "hello",
+      move: {
+        player: player,
+        piece: piece,
+        diceValue: dicevalue
+      }
+    };
+    
+    socket?.send(JSON.stringify(moveObject));
   }
 
   useEffect(() => {
@@ -224,7 +228,7 @@ export const Board = () => {
         </div>
       </div>
       <div className="flex flex-row justify-center content-center m-5">
-        <Dice size={80} onRoll={(value) => dicevalue=value} />
+        <Dice size={80} cheatValue={6} onRoll={(value) => dicevalue=value} />
       </div>
     </div>
   )
