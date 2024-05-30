@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import Dice from 'react-dice-roll';
 import { useEffect, useState } from 'react';
 import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
-import { codeState, socketState } from '../atoms/atom';
+import { codeState, socketState, colorState } from '../atoms/atom';
 import { GameBoard } from "@repo/common/game";
 
 
@@ -20,7 +20,7 @@ export function movePiece(pieceId: string, coordinateIndex: number): void {
 }
 
 export function movePieceAtOnce(pieceId: string, coordinateIndex: number): void {
-  
+
 }
 
 function setInitialPosition(): void {
@@ -52,8 +52,9 @@ function setInitialPosition(): void {
 export const Board = () => {
   let dicevalue = 0;
   const [code, _setCode] = useRecoilState(codeState);
+  const [color, _setColor] = useRecoilState(colorState);
   const [socket, _setSocket] = useRecoilState(socketState);
-  const [chance, setChance] = useState("red");
+  const [chance, setChance] = useState("blue");
   const game = new GameBoard(code);
 
   useEffect(() => {
@@ -112,9 +113,6 @@ export const Board = () => {
   }, []);
 
   return (
-    // back red yellow green blue
-
-    // blue yelllow green red
     <div className='w-screen h-screen p-16 flex flex-col'>
       <div className='flex flex-row justify-center bg-grey content-center'>
         <div id="ludo-board" className=" m-6 justify-center bg-grey">
@@ -123,32 +121,40 @@ export const Board = () => {
             id="p00"
             className='piece player-one-piece'
             onClick={()=>{
-              if(chance=="blue") 
+              if(chance==color) {
                 testMove(0, 0, dicevalue);
+                setChance("yellow");
+              }
             }}
           ></div>
           <div 
             id="p01"
             className='piece player-one-piece'
             onClick={()=>{
-              if(chance=="blue") 
+              if(chance==color) {
                 testMove(0, 1, dicevalue);
+                setChance("yellow");
+              }
             }}
           ></div>
           <div 
             id="p02"
             className='piece player-one-piece'
             onClick={()=>{
-              if(chance=="blue") 
+              if(chance==color) {
                 testMove(0, 2, dicevalue);
+                setChance("yellow");
+              }
             }}
           ></div>
           <div 
             id="p03"
             className='piece player-one-piece'
             onClick={()=>{
-              if(chance=="blue") 
+              if(chance==color) {
                 testMove(0, 3, dicevalue);
+                setChance("yellow");
+              }
             }}
           ></div>
 
@@ -156,32 +162,40 @@ export const Board = () => {
             id="p10"
             className='piece player-two-piece'
             onClick={()=>{
-              if(chance=="yellow") 
+              if(chance==color) {
                 testMove(1, 0, dicevalue);
+                setChance("green");
+              }
             }}
           ></div>
           <div 
             id="p11"
             className='piece player-two-piece'
             onClick={()=>{
-              if(chance=="yellow") 
+              if(chance==color) {
                 testMove(1, 1, dicevalue);
+                setChance("green");
+              }
             }}
           ></div>
           <div 
             id="p12"
             className='piece player-two-piece'
             onClick={()=>{
-              if(chance=="yellow") 
+              if(chance==color) {
                 testMove(1, 2, dicevalue);
+                setChance("green");
+              }
             }}
           ></div>
           <div 
             id="p13"
             className='piece player-two-piece'
             onClick={()=>{
-              if(chance=="yellow") 
+              if(chance==color) {
                 testMove(1, 3, dicevalue);
+                setChance("green");
+              }
             }}
           ></div>
 
@@ -189,32 +203,40 @@ export const Board = () => {
             id="p20"
             className='piece player-three-piece'
             onClick={()=>{
-              if(chance=="green") 
+              if(chance==color) {
                 testMove(2, 0, dicevalue);
+                setChance("red");
+              }
             }}
           ></div>
           <div 
             id="p21"
             className='piece player-three-piece'
             onClick={()=>{
-              if(chance=="green") 
+              if(chance==color) {
                 testMove(2, 1, dicevalue);
+                setChance("red");
+              }
             }}
           ></div>
           <div 
             id="p22"
             className='piece player-three-piece'
             onClick={()=>{
-              if(chance=="green") 
+              if(chance==color) {
                 testMove(2, 2, dicevalue);
+                setChance("red");
+              }
             }}
           ></div>
           <div 
             id="p23"
             className='piece player-three-piece'
             onClick={()=>{
-              if(chance=="green") 
+              if(chance==color) {
                 testMove(2, 3, dicevalue);
+                setChance("red");
+              }
             }}
           ></div>
 
@@ -222,32 +244,40 @@ export const Board = () => {
             id="p30"
             className='piece player-four-piece'
             onClick={()=>{
-              if(chance=="red") 
+              if(chance==color) {
                 testMove(3, 0, dicevalue);
+                setChance("blue");
+              }
             }}
           ></div>
           <div 
             id="p31"
             className='piece player-four-piece'
             onClick={()=>{
-              if(chance=="red") 
+              if(chance==color) {
                 testMove(3, 1, dicevalue);
+                setChance("blue");
+              }
             }}
           ></div>
           <div 
             id="p32"
             className='piece player-four-piece'
             onClick={()=>{
-              if(chance=="red") 
+              if(chance==color) {
                 testMove(3, 2, dicevalue);
+                setChance("blue");
+              }
             }}
           ></div>
           <div 
             id="p33"
             className='piece player-four-piece'
             onClick={()=>{
-              if(chance=="red") 
+              if(chance==color) {
                 testMove(3, 3, dicevalue);
+                setChance("blue");
+              }
             }}
           ></div>
         </div>
