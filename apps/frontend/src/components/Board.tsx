@@ -114,6 +114,7 @@ export const Board = () => {
 
   return (
     <div className='w-screen h-screen p-16 flex flex-col'>
+      <h1>{color} -- {chance}</h1>
       <div className='flex flex-row justify-center bg-grey content-center'>
         <div id="ludo-board" className=" m-6 justify-center bg-grey">
           <img src="ludo-bg.jpg"/>
