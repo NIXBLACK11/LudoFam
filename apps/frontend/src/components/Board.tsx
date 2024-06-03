@@ -6,7 +6,6 @@ import { COORDINATES_MAP, STEP_LENGTH } from '../constant/constants';
 import { codeState, socketState, colorState } from '../atoms/atom';
 import { GameBoard } from "@repo/common/game";
 
-
 export function movePiece(pieceId: string, coordinateIndex: number): void {
   const pieceElement = document.getElementById(pieceId);
   if (pieceElement) {
@@ -19,9 +18,9 @@ export function movePiece(pieceId: string, coordinateIndex: number): void {
   }
 }
 
-export function movePieceAtOnce(pieceId: string, coordinateIndex: number): void {
+// export function movePieceAtOnce(pieceId: string, coordinateIndex: number): void {
 
-}
+// }
 
 function setInitialPosition(): void {
   const COORDINATE_OFFSETS: { [key: number]: number } = {
@@ -67,6 +66,8 @@ export const Board = () => {
 
           if (message.type === "move") {
               if (message.success) {
+                console.log("Called in handle message");
+                nextChance(message.diceValue);
                 const moves = message.Moves;
                 console.log("Moves:"+moves);
                 moves?.map((m: { player: { toString: () => any; }; piece: { toString: () => any; }; nextPos: any; }) => {
@@ -82,6 +83,18 @@ export const Board = () => {
 
     socket.onmessage = handleMessage2;
   }, [socket]);
+
+  const nextChance = (dicevalue: number) => {
+    // blue yellow green red
+    console.log("Chance of =>", chance);
+    if(dicevalue!=6) {
+      if(chance=="blue") setChance("yellow");
+      else if(chance=="yellow") setChance("green");
+      else if(chance=="green") setChance("red");
+      else setChance("blue");
+    }
+    console.log("Chance of =>", chance);
+  }
 
   const testMove = (player: number, piece: number, dicevalue: number) => {
     const res = game.makeMove(player, piece, dicevalue);
@@ -124,7 +137,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(0, 0, dicevalue);
-                setChance("yellow");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -134,7 +147,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(0, 1, dicevalue);
-                setChance("yellow");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -144,7 +157,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(0, 2, dicevalue);
-                setChance("yellow");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -154,7 +167,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(0, 3, dicevalue);
-                setChance("yellow");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -165,7 +178,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(1, 0, dicevalue);
-                setChance("green");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -175,7 +188,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(1, 1, dicevalue);
-                setChance("green");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -185,7 +198,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(1, 2, dicevalue);
-                setChance("green");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -195,7 +208,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(1, 3, dicevalue);
-                setChance("green");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -206,7 +219,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(2, 0, dicevalue);
-                setChance("red");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -216,7 +229,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(2, 1, dicevalue);
-                setChance("red");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -226,7 +239,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(2, 2, dicevalue);
-                setChance("red");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -236,7 +249,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(2, 3, dicevalue);
-                setChance("red");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -247,7 +260,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(3, 0, dicevalue);
-                setChance("blue");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -257,7 +270,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(3, 1, dicevalue);
-                setChance("blue");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -267,7 +280,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(3, 2, dicevalue);
-                setChance("blue");
+                nextChance(dicevalue);
               }
             }}
           ></div>
@@ -277,7 +290,7 @@ export const Board = () => {
             onClick={()=>{
               if(chance==color) {
                 testMove(3, 3, dicevalue);
-                setChance("blue");
+                nextChance(dicevalue);
               }
             }}
           ></div>

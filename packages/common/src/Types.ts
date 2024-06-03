@@ -9,6 +9,8 @@ export type Move = {
 };
 
 export type Result = {
+  player: number,
+  diceValue: number,
   type: string;
   success: boolean;
   completed: boolean;

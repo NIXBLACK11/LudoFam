@@ -74,23 +74,23 @@ export class GameBoard {
 
             if(this.totalCompleted===4) {
                 console.log(1);
-                return { success: false, type: "move", completed: true, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                return { player: player, diceValue: diceValue, success: false, type: "move", completed: true, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
             }
 
             if (diceValue > 6 || diceValue < 1) {
                 console.log(2);
-                return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
             }
         
             if (piece > 3 || player > 3 || piece < 0 || player < 0) {
                 console.log(3);
-                return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
             }
         
             if (!this.players || !this.startPoints || !this.exitPoints) {
                 // Check if necessary properties are defined
                 console.log(4);
-                return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
             }
 
             // Condition when player's selected piece is in home and diceValue is 6
@@ -98,7 +98,7 @@ export class GameBoard {
                 this.players[player][piece] = this.startPoints[player];
                 this.board[this?.startPoints[player]].push(`${player}, ${piece}`);
                 console.log(5);
-                return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: false, nextPos: this.startPoints[player] || 0 }]};
+                return { player: player, diceValue: diceValue, success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: false, nextPos: this.startPoints[player] || 0 }]};
             }
         
             // Condition when player's piece is not in home
@@ -109,7 +109,7 @@ export class GameBoard {
                 if(this.playersMoved[player][piece]+diceValue>56) {
                     console.log("error", this.playersMoved[player][piece]+diceValue);
                     console.log(6);
-                    return { success: false, type: "move", completed: false, Moves: [{player: player, piece: piece, entry: true, nextPos: 0 }]};
+                    return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{player: player, piece: piece, entry: true, nextPos: 0 }]};
                 }
                 this.playersMoved[player][piece] = this.playersMoved[player][piece]+diceValue;
                 console.log("error", this.playersMoved[player][piece]);
@@ -134,11 +134,11 @@ export class GameBoard {
                             console.log("nextpos<6", nextPos-1);
                             this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                             console.log(7);
-                            return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
+                            return { player: player, diceValue: diceValue, success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
                         } else if(nextPos>6) {
                             console.log("nextpos>6", nextPos-1);
                             console.log(8);
-                            return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+                            return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
                         } else {
                             console.log("nextpos==6", nextPos-1);
                             this.entry[player][this.playersPosEnt[player][piece]] = 
@@ -151,10 +151,10 @@ export class GameBoard {
                             this.totalCompleted++;
                             if(this.totalCompleted===4) {
                                 console.log(9);
-                                return { success: true, type: "move", completed: true, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos }]};
+                                return { player: player, diceValue: diceValue, success: true, type: "move", completed: true, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos }]};
                             } else {
                                 console.log(10);
-                                return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos }]};
+                                return { player: player, diceValue: diceValue, success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos }]};
                             }    
                         }
                     } else {
@@ -162,7 +162,7 @@ export class GameBoard {
                         this.entry[player][nextPos-1].push(`${player}, ${piece}`);
                         this.playersPosEnt[player][piece] = nextPos-1;
                         console.log(11);
-                        return { success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
+                        return { player: player, diceValue: diceValue, success: true, type: "move", completed: false, Moves: [{ player: player, piece: piece, entry: true, nextPos: nextPos-1 }]};
                     }
                 }
                 // Remove player from old position
@@ -197,13 +197,13 @@ export class GameBoard {
 
                 Moves.push({player: player, piece: piece, entry: false, nextPos: nextPos});
                 console.log(12);
-                return { success: true, type: "move", completed: false, Moves: Moves};
+                return { player: player, diceValue: diceValue, success: true, type: "move", completed: false, Moves: Moves};
             }
         } catch (e: any) {
             console.log(`${e}13`);
-            return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+            return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
         }
         console.log(14);
-        return { success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
+        return { player: player, diceValue: diceValue, success: false, type: "move", completed: false, Moves: [{ player: 0, piece: 0, entry: false, nextPos: 0 }] };
       }     
 }
